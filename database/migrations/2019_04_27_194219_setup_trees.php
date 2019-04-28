@@ -24,8 +24,8 @@ class SetupTrees extends Migration
             $table->string('COTE')->nullable();
             $table->string('No_civique')->nullable();
             $table->string('Emplacement')->nullable();
-            $table->float('Coord_X')->nullable();
-            $table->float('Coord_Y')->nullable();
+            $table->float('Coord_X', 15, 4)->nullable(); // 5043932.522
+            $table->float('Coord_Y', 15, 4)->nullable();
             $table->string('SIGLE')->nullable();
             $table->string('Essence_latin')->nullable();
             $table->string('Essence_fr')->nullable();
@@ -36,8 +36,15 @@ class SetupTrees extends Migration
             $table->string('localisation')->nullable();
             $table->string('CODE_PARC')->nullable();
             $table->string('NOM_PARC')->nullable();
-            $table->float('Longitude')->nullable();
-            $table->float('Latitude')->nullable();
+            $table->float('Longitude', 9, 6)->nullable();
+            $table->float('Latitude', 9, 6)->nullable();
+            $table->point('location');
+
+
+            $table->index(['Latitude','Longitude']);
+            $table->index('Latitude');
+            $table->index('Longitude');
+            $table->spatialIndex('location');
 
 
         });
