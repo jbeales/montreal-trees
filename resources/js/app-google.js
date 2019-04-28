@@ -95,7 +95,7 @@
 		var geojson = JSON.parse(this.responseText);
 		geojson.features.forEach(function(feature) {
 
-			if( !circles[feature.properties.emp]) {
+			if( !circles[feature.properties.id]) {
 				var center = new google.maps.LatLng(feature.geometry.coordinates[1],feature.geometry.coordinates[0]),
 					treeCircle = new google.maps.Circle({
 			            strokeColor: '#00FF00',
@@ -107,7 +107,7 @@
 			            center: center,
 			            radius: 1.25
 			        });
-			        circles[feature.properties.emp] = treeCircle;
+			        circles[feature.properties.id] = treeCircle;
 			        
 
 		        treeCircle.addListener('click', function() {
@@ -131,9 +131,13 @@
 		$html += '<h4>' + props.latin + '</h4>';
 		$html += '<p><strong>FR:</strong> ' + props.fr + '</p>';
 		$html += '<p><strong>EN:</strong> ' + props.ang + '</p>';
+		if(props.diameter !== null) {
+			$html += '<p><strong>Diameter:</strong> ' + props.diameter + '</p>';	
+		}
 		if(props.planted !== null) {
 			$html += '<p><strong>Planté:</strong> ' + props.planted + '</p>';
 		}
+		$html += '<p><strong>Updated:</strong> ' + props.updated + '</p>';
 		$html += '</article>';
 
 		return $html;

@@ -1,1 +1,222 @@
-!function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="/",n(n.s=2)}([,,function(e,t,n){e.exports=n(3)},function(e,t){!function(){var e,t=!1;window.mapboxgl.accessToken="pk.eyJ1Ijoiam9obmJlYWxlcyIsImEiOiJjanYwMzczbDMwM2h2NDRvMzUxanN4ZWtvIn0.5u_91jcSjKL2lyqDz_SRBA";var n=new mapboxgl.Map({container:document.querySelector(".map"),style:"mapbox://styles/mapbox/satellite-streets-v9",center:[-73.567229,45.453523],zoom:15});function r(e){return Math.abs(e.getNorth()-e.getSouth())*Math.abs(e.getEast()-e.getWest())}function o(e,t){var n=r(e),o=r(t);return(n-o)/o*100}n.addControl(new mapboxgl.NavigationControl),n.on("idle",function(r){var a,l,s,u,i,c,g,p=r.target.getBounds();void 0===e&&(e=p),console.log(o(p,e)),(o(p,e)>10||(a=p,l=e,s=Math.abs(a.getCenter().lat-l.getCenter().lat),u=Math.abs(a.getCenter().lng-l.getCenter().lng),i=Math.abs(l.getEast()-l.getWest()),((c=s/Math.abs(l.getNorth()-l.getSouth())*100)>(g=u/i*100)?c:g)>20)||!t)&&r.target.getZoom()>16&&(e=p,t=!0,function(e){n.getLayer("trees")&&n.removeLayer("trees");n.getSource("tree-json")&&n.removeSource("tree-json");n.addSource("tree-json",{type:"geojson",data:"/api/trees?bounds="+JSON.stringify(e.toArray())}),n.addLayer({id:"trees",type:"circle",source:"tree-json",paint:{"circle-radius":5,"circle-color":"#3887be"}}),n.on("mouseenter","trees",function(){n.getCanvas().style.cursor="pointer"}),n.on("mouseleave","trees",function(){n.getCanvas().style.cursor=""}),n.on("click","trees",function(e){(new mapboxgl.Popup).setLngLat(e.lngLat).setHTML(function(e){$html='<article class="tree-details">',$html+="<h4>"+e.latin+"</h4>",$html+="<p><strong>FR:</strong> "+e.fr+"</p>",$html+="<p><strong>EN:</strong> "+e.ang+"</p>",e.planted.length>0&&null!==e.planted&&($html+="<p><strong>Planté:</strong> "+e.planted+"</p>");return $html+="</article>",$html}(e.features[0].properties)).addTo(n)})}(p))})}()}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./resources/js/app.js":
+/*!*****************************!*\
+  !*** ./resources/js/app.js ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function () {
+  var previousBounds,
+      hasSomeTrees = false;
+  window.mapboxgl.accessToken = '';
+  var map = new mapboxgl.Map({
+    container: document.querySelector('.map'),
+    // container id
+    style: 'mapbox://styles/mapbox/satellite-streets-v9',
+    center: [-73.567229, 45.453523],
+    // starting position [lng, lat]
+    zoom: 15 // starting zoom
+
+  });
+
+  function getAreaFromBounds(bounds) {
+    return Math.abs(bounds.getNorth() - bounds.getSouth()) * Math.abs(bounds.getEast() - bounds.getWest());
+  }
+  /**
+   * Returns the percentage difference between newArea and oldAre
+   * @param  {float} newArea  The new area
+   * @param  {float} oldArea	The old area
+   * @return {float}          The difference, as a percentage.
+   */
+
+
+  function calculateAreaDiff(newBounds, oldBounds) {
+    var newArea = getAreaFromBounds(newBounds),
+        oldArea = getAreaFromBounds(oldBounds);
+    return 100 * ((newArea - oldArea) / oldArea);
+  }
+
+  function calculateCenterDiff(newBounds, oldBounds) {
+    var vertDist = Math.abs(newBounds.getCenter().lat - oldBounds.getCenter().lat),
+        horizontalDist = Math.abs(newBounds.getCenter().lng - oldBounds.getCenter().lng),
+        oldWidth = Math.abs(oldBounds.getEast() - oldBounds.getWest()),
+        oldHeight = Math.abs(oldBounds.getNorth() - oldBounds.getSouth()),
+        vertDiff = vertDist / oldHeight * 100,
+        horizontalDiff = horizontalDist / oldWidth * 100;
+    return vertDiff > horizontalDiff ? vertDiff : horizontalDiff;
+  } // Add zoom and rotation controls to the map.
+
+
+  map.addControl(new mapboxgl.NavigationControl());
+  map.on('idle', function (evt) {
+    var bounds = evt.target.getBounds();
+
+    if (typeof previousBounds === 'undefined') {
+      previousBounds = bounds;
+    }
+
+    console.log(calculateAreaDiff(bounds, previousBounds)); // if area is 10% different from currentArea
+    // Or the center has moved 20% of the previous bounding box 
+
+    if ((calculateAreaDiff(bounds, previousBounds) > 10 || calculateCenterDiff(bounds, previousBounds) > 20 || !hasSomeTrees) && evt.target.getZoom() > 16) {
+      previousBounds = bounds;
+      hasSomeTrees = true;
+      getTreesForBounds(bounds);
+    }
+  });
+
+  function getTreesForBounds(bounds) {
+    if (map.getLayer('trees')) {
+      map.removeLayer('trees');
+    }
+
+    if (map.getSource('tree-json')) {
+      map.removeSource('tree-json');
+    }
+
+    map.addSource('tree-json', {
+      type: 'geojson',
+      data: "/api/trees?bounds=" + JSON.stringify(bounds.toArray())
+    });
+    map.addLayer({
+      "id": "trees",
+      "type": "circle",
+      "source": "tree-json",
+      "paint": {
+        "circle-radius": 5,
+        "circle-color": "#3887be"
+      }
+    }); // Change the cursor to a pointer when the mouse is over the states layer.
+
+    map.on('mouseenter', 'trees', function () {
+      map.getCanvas().style.cursor = 'pointer';
+    }); // Change it back to a pointer when it leaves.
+
+    map.on('mouseleave', 'trees', function () {
+      map.getCanvas().style.cursor = '';
+    }); // When a click event occurs on a feature in the states layer, open a popup at the
+    // location of the click, with description HTML from its properties.
+
+    map.on('click', 'trees', function (e) {
+      new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(makeTreeDesc(e.features[0].properties)).addTo(map);
+    });
+
+    function makeTreeDesc(props) {
+      $html = '<article class="tree-details">';
+      $html += '<h4>' + props.latin + '</h4>';
+      $html += '<p><strong>FR:</strong> ' + props.fr + '</p>';
+      $html += '<p><strong>EN:</strong> ' + props.ang + '</p>';
+
+      if (props.planted.length > 0 && props.planted !== null) {
+        $html += '<p><strong>Planté:</strong> ' + props.planted + '</p>';
+      }
+
+      $html += '</article>';
+      return $html;
+    }
+  }
+})();
+
+/***/ }),
+
+/***/ 1:
+/*!***********************************!*\
+  !*** multi ./resources/js/app.js ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! /Users/John/Work/arbres/arbres-montreal/resources/js/app.js */"./resources/js/app.js");
+
+
+/***/ })
+
+/******/ });

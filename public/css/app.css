@@ -1,1 +1,41 @@
-body,html{margin:0;padding:0}.map{width:100vw;height:100vh}.tree-details h4{margin-top:0}.tree-details p{margin:0 0 .5em}.loading{display:none;opacity:0;z-index:1000;position:fixed;top:60px;padding:0 5vw 0 2vw;font-family:Roboto,Helvetica,Arial,Sans-Serif;font-weight:700;text-align:left;float:left;background:hsla(0,0%,100%,.5);color:#000;font-size:24px}.loading.active{opacity:1;display:block;transition:opacity 1s}
+body,
+html {
+  margin: 0;
+  padding: 0;
+}
+
+.map {
+  width: 100vw;
+  height: 100vh;
+}
+
+.tree-details h4 {
+  margin-top: 0;
+}
+
+.tree-details p {
+  margin: 0 0 0.5em 0;
+}
+
+.loading {
+  display: none;
+  opacity: 0;
+  z-index: 1000;
+  position: fixed;
+  top: 60px;
+  padding: 0 5vw 0 2vw;
+  font-family: Roboto, Helvetica, Arial, Sans-Serif;
+  font-weight: bold;
+  text-align: left;
+  float: left;
+  background: rgba(255, 255, 255, 0.5);
+  color: #000;
+  font-size: 24px;
+}
+
+.loading.active {
+  opacity: 1;
+  display: block;
+  transition: opacity 1s;
+}
+

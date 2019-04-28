@@ -21,12 +21,14 @@ class TreeResource extends JsonResource
                 'coordinates' => [$this->Longitude, $this->Latitude]
             ],
             'properties' => [
+                'id' => $this->id,
                 'emp' => $this->EMP_NO,
                 'latin' => $this->Essence_latin,
                 'fr' => $this->Essence_fr,
                 'ang' => $this->ESSENCE_ANG,
                 'updated' => $this->Date_releve,
                 'planted' => $this->Date_plantation,
+                'diameter' => $this->DHP,
             ]
         ];
     }

@@ -38,7 +38,10 @@ class PopulateTrees extends Migration
                         $plantation = Carbon\Carbon::createFromFormat('Y-m-d\TH:i:s', $data[16], $timezone);
                     }
 
-
+                    $dhp = 0;
+                    if(!empty($data[14])) {
+                        $dhp = $data[14];
+                    }
                     
 
                     App\Tree::create([
@@ -56,7 +59,7 @@ class PopulateTrees extends Migration
                         'Essence_latin' => $data[11],
                         'Essence_fr' => $data[12],
                         'ESSENCE_ANG' => $data[13],
-                        'DHP' => $data[14],
+                        'DHP' => $dhp,
                         'Date_releve' => $releve,
                         'Date_plantation' => $plantation,
                         'localisation' => $data[17],
@@ -64,7 +67,7 @@ class PopulateTrees extends Migration
                         'NOM_PARC' => $data[19],
                         'Longitude' => $data[20],
                         'Latitude' => $data[21],
-                        'location' => \DB::raw(sprintf("POINT(%s, %s)", $data[20], $data[21]))  
+                        'location' => DB::raw(sprintf("POINT(%s, %s)", floatval($data[20]), floatval($data[21])))  
                     ]);
 
                     $created++;
@@ -74,6 +77,10 @@ class PopulateTrees extends Migration
         }
 
         echo "\nThere were $created trees added to the DB.\n";
+
+        Schema::table('trees', function (Blueprint $table) {
+            $table->spatialIndex('location');
+        });
     }
 
     /**

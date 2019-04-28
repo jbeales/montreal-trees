@@ -1,1 +1,249 @@
-!function(t){var e={};function n(o){if(e[o])return e[o].exports;var r=e[o]={i:o,l:!1,exports:{}};return t[o].call(r.exports,r,r.exports,n),r.l=!0,r.exports}n.m=t,n.c=e,n.d=function(t,e,o){n.o(t,e)||Object.defineProperty(t,e,{enumerable:!0,get:o})},n.r=function(t){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},n.t=function(t,e){if(1&e&&(t=n(t)),8&e)return t;if(4&e&&"object"==typeof t&&t&&t.__esModule)return t;var o=Object.create(null);if(n.r(o),Object.defineProperty(o,"default",{enumerable:!0,value:t}),2&e&&"string"!=typeof t)for(var r in t)n.d(o,r,function(e){return t[e]}.bind(null,r));return o},n.n=function(t){var e=t&&t.__esModule?function(){return t.default}:function(){return t};return n.d(e,"a",e),e},n.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},n.p="/",n(n.s=0)}([function(t,e,n){n(1),t.exports=n(4)},function(t,e){!function(){var t,e,n,o=!1,r=[],a=[];function i(t){return Math.abs(t.getNorthEast().lng()-t.getSouthWest().lng())*Math.abs(t.getNorthEast().lat()-t.getSouthWest().lat())}function l(){JSON.parse(this.responseText).features.forEach(function(t){if(!r[t.properties.emp]){var n=new google.maps.LatLng(t.geometry.coordinates[1],t.geometry.coordinates[0]),o=new google.maps.Circle({strokeColor:"#00FF00",strokeOpacity:1,strokeWeight:2,fillColor:"#00FF00",fillOpacity:.35,map:e,center:n,radius:1.25});r[t.properties.emp]=o,o.addListener("click",function(){infowindow=new google.maps.InfoWindow({content:s(t.properties)}),infowindow.open(e),infowindow.setPosition(o.center),a.push(infowindow)})}}),n.classList.remove("active")}function s(t){return $html='<article class="tree-details">',$html+="<h4>"+t.latin+"</h4>",$html+="<p><strong>FR:</strong> "+t.fr+"</p>",$html+="<p><strong>EN:</strong> "+t.ang+"</p>",null!==t.planted&&($html+="<p><strong>Planté:</strong> "+t.planted+"</p>"),$html+="</article>",$html}window.initMap=function(){(e=new google.maps.Map(document.querySelector(".map"),{center:{lat:45.453523,lng:-73.567229},zoom:12,mapTypeId:"hybrid"})).addListener("bounds_changed",function(){var r,a,s,u=e.getBounds();void 0===t&&(t=u),r=t,a=i(u),s=i(r),((a-s)/s*100>10||function(t,e){var n=Math.abs(t.getCenter().lat()-e.getCenter().lat()),o=Math.abs(t.getCenter().lng()-e.getCenter().lng()),r=Math.abs(e.getNorthEast().lng()-e.getSouthWest().lng()),a=Math.abs(e.getNorthEast().lat()-e.getSouthWest().lng()),i=n/a*100,l=o/r*100;return i>l?i:l}(u,t)>10||!o)&&e.getZoom()>15&&(t=u,o=!0,function(t){n.classList.add("active");var e=new XMLHttpRequest;e.addEventListener("load",l),e.open("GET","/api/trees?bounds="+JSON.stringify(t.toJSON())),e.send()}(u))}),n=document.querySelector(".loading")}}()},,,function(t,e){}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./resources/js/app-google.js":
+/*!************************************!*\
+  !*** ./resources/js/app-google.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+(function () {
+  var previousBounds,
+      hasSomeTrees = false,
+      map,
+      circles = [],
+      infowindows = [],
+      loader;
+
+  window.initMap = function () {
+    map = new google.maps.Map(document.querySelector('.map'), {
+      center: {
+        lat: 45.453523,
+        lng: -73.567229
+      },
+      zoom: 12,
+      mapTypeId: 'hybrid'
+    });
+    map.addListener('bounds_changed', function () {
+      var bounds = map.getBounds();
+
+      if (typeof previousBounds === 'undefined') {
+        previousBounds = bounds;
+      } // if area is 10% different from currentArea
+      // Or the center has moved 20% of the previous bounding box 
+
+
+      if ((calculateAreaDiff(bounds, previousBounds) > 10 || calculateCenterDiff(bounds, previousBounds) > 10 || !hasSomeTrees) && map.getZoom() > 15) {
+        previousBounds = bounds;
+        hasSomeTrees = true;
+        getTreesForBounds(bounds);
+      }
+    });
+    loader = document.querySelector('.loading');
+  };
+
+  function getAreaFromBounds(bounds) {
+    return Math.abs(bounds.getNorthEast().lng() - bounds.getSouthWest().lng()) * Math.abs(bounds.getNorthEast().lat() - bounds.getSouthWest().lat());
+  }
+  /**
+   * Returns the percentage difference between newArea and oldAre
+   * @param  {float} newArea  The new area
+   * @param  {float} oldArea	The old area
+   * @return {float}          The difference, as a percentage.
+   */
+
+
+  function calculateAreaDiff(newBounds, oldBounds) {
+    var newArea = getAreaFromBounds(newBounds),
+        oldArea = getAreaFromBounds(oldBounds);
+    return 100 * ((newArea - oldArea) / oldArea);
+  }
+
+  function calculateCenterDiff(newBounds, oldBounds) {
+    var vertDist = Math.abs(newBounds.getCenter().lat() - oldBounds.getCenter().lat()),
+        horizontalDist = Math.abs(newBounds.getCenter().lng() - oldBounds.getCenter().lng()),
+        oldWidth = Math.abs(oldBounds.getNorthEast().lng() - oldBounds.getSouthWest().lng()),
+        oldHeight = Math.abs(oldBounds.getNorthEast().lat() - oldBounds.getSouthWest().lng()),
+        vertDiff = vertDist / oldHeight * 100,
+        horizontalDiff = horizontalDist / oldWidth * 100;
+    return vertDiff > horizontalDiff ? vertDiff : horizontalDiff;
+  }
+
+  function getTreesForBounds(bounds) {
+    startLoading();
+    var oReq = new XMLHttpRequest();
+    oReq.addEventListener("load", reqListener);
+    oReq.open("GET", "/api/trees?bounds=" + JSON.stringify(bounds.toJSON()));
+    oReq.send();
+  }
+
+  function reqListener() {
+    var geojson = JSON.parse(this.responseText);
+    geojson.features.forEach(function (feature) {
+      if (!circles[feature.properties.id]) {
+        var center = new google.maps.LatLng(feature.geometry.coordinates[1], feature.geometry.coordinates[0]),
+            treeCircle = new google.maps.Circle({
+          strokeColor: '#00FF00',
+          strokeOpacity: 1,
+          strokeWeight: 2,
+          fillColor: '#00FF00',
+          fillOpacity: 0.35,
+          map: map,
+          center: center,
+          radius: 1.25
+        });
+        circles[feature.properties.id] = treeCircle;
+        treeCircle.addListener('click', function () {
+          infowindow = new google.maps.InfoWindow({
+            content: makeTreeDesc(feature.properties)
+          });
+          infowindow.open(map);
+          infowindow.setPosition(treeCircle.center);
+          infowindows.push(infowindow);
+        });
+      }
+    });
+    stopLoading();
+  }
+
+  function makeTreeDesc(props) {
+    $html = '<article class="tree-details">';
+    $html += '<h4>' + props.latin + '</h4>';
+    $html += '<p><strong>FR:</strong> ' + props.fr + '</p>';
+    $html += '<p><strong>EN:</strong> ' + props.ang + '</p>';
+
+    if (props.diameter !== null) {
+      $html += '<p><strong>Diameter:</strong> ' + props.diameter + '</p>';
+    }
+
+    if (props.planted !== null) {
+      $html += '<p><strong>Planté:</strong> ' + props.planted + '</p>';
+    }
+
+    $html += '<p><strong>Updated:</strong> ' + props.updated + '</p>';
+    $html += '</article>';
+    return $html;
+  }
+
+  function startLoading() {
+    loader.classList.add('active');
+  }
+
+  function stopLoading() {
+    loader.classList.remove('active');
+  }
+})();
+
+/***/ }),
+
+/***/ "./resources/sass/app.scss":
+/*!*********************************!*\
+  !*** ./resources/sass/app.scss ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 0:
+/*!********************************************************************!*\
+  !*** multi ./resources/js/app-google.js ./resources/sass/app.scss ***!
+  \********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(/*! /Users/John/Work/arbres/arbres-montreal/resources/js/app-google.js */"./resources/js/app-google.js");
+module.exports = __webpack_require__(/*! /Users/John/Work/arbres/arbres-montreal/resources/sass/app.scss */"./resources/sass/app.scss");
+
+
+/***/ })
+
+/******/ });

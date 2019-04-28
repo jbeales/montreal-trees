@@ -40,13 +40,6 @@ class SetupTrees extends Migration
             $table->float('Latitude', 9, 6)->nullable();
             $table->point('location');
 
-
-            $table->index(['Latitude','Longitude']);
-            $table->index('Latitude');
-            $table->index('Longitude');
-            $table->spatialIndex('location');
-
-
         });
     }
 

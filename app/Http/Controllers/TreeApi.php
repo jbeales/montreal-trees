@@ -20,27 +20,43 @@ class TreeApi extends Controller
 		$bounds = json_decode($request->get('bounds'));
 
 		if( isset($bounds->north) ) {
-			$trees = Tree::where([
-				['Latitude', '<', $bounds->north],
-				['Latitude', '>', $bounds->south],
-				['Longitude', '<', $bounds->east],
-				['Longitude', '>', $bounds->west]
-			])->get();
+			
+			$points = [
+				[$bounds->west, $bounds->north],
+				[$bounds->east, $bounds->north],
+				[$bounds->east, $bounds->south],
+				[$bounds->west, $bounds->south],
+			];
+
 		} else {
 			// [lng,lat]
 			$southwest = $bounds[0];
 			$northeast = $bounds[1];
 
-			$trees = Tree::where([
-				['Latitude', '<', $northeast[1]],
-				['Latitude', '>', $southwest[1]],
-				['Longitude', '<', $northeast[0]],
-				['Longitude', '>', $southwest[0]]
-			])->get();
-
+			$points = [
+				[$northeast[0], $southwest[1]],
+				[$northeast[0], $northeast[1]],
+				[$southwest[0], $northeast[1]],
+				[$southwest[0], $southwest[1]],
+			];
 		}
 
-		
+		$substitutions = [];
+		foreach( $points as $point ) {
+			$substitutions[] = floatval($point[0]);
+			$substitutions[] = floatval($point[1]);
+		}
+
+		// Add the first point as the last to close the polygon.
+		$substitutions[] = floatval($points[0][0]);
+		$substitutions[] = floatval($points[0][1]);
+
+		$geomtext = sprintf(
+			'POLYGON((%F %F, %F %F, %F %F, %F %F, %F %F))',
+			...$substitutions
+		);
+
+		$trees = Tree::whereRaw(sprintf("ST_Within(location, ST_GeomFromText('%s'))", $geomtext))->get();
 
 		return new TreeResourceCollection($trees);
 
