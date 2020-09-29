@@ -177,10 +177,18 @@
                        ">",
                        ["index-of",
                            filterText,
-                           ["downcase", ['get','fr']]
+                           ["downcase", ['get','fr_clean']]
                        ],
                     -1
                    ],
+                   [
+                          ">",
+                          ["index-of",
+                              filterText,
+                              ["downcase", ['get','fr']]
+                          ],
+                       -1
+                    ],
                    [
                        ">",
                        ["index-of",

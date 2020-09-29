@@ -229,7 +229,7 @@
     var filterText = filterElm.value.toLowerCase();
 
     if (map.getLayer('trees') && filterText.length > 1) {
-      map.setFilter('trees', ['any', [">", ["index-of", filterText, ["downcase", ['get', 'fr']]], -1], [">", ["index-of", filterText, ["downcase", ['get', 'ang']]], -1], [">", ["index-of", filterText, ["downcase", ['get', 'latin']]], -1]]);
+      map.setFilter('trees', ['any', [">", ["index-of", filterText, ["downcase", ['get', 'fr_clean']]], -1], [">", ["index-of", filterText, ["downcase", ['get', 'fr']]], -1], [">", ["index-of", filterText, ["downcase", ['get', 'ang']]], -1], [">", ["index-of", filterText, ["downcase", ['get', 'latin']]], -1]]);
     } else if (map.getLayer('trees')) {
       map.setFilter('trees', null);
     }
