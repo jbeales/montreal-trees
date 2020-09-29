@@ -26,8 +26,8 @@ class TreeResource extends JsonResource
                 'latin' => $this->Essence_latin,
                 'fr' => $this->Essence_fr,
                 'ang' => $this->ESSENCE_ANG,
-                'updated' => $this->Date_releve,
-                'planted' => $this->Date_plantation,
+                'updated' => $this->Date_releve->toDateString(),
+                'planted' => $this->Date_plantation->toDateString(),
                 'diameter' => $this->DHP,
             ]
         ];
