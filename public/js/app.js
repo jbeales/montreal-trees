@@ -95,16 +95,28 @@
 
 (function () {
   var previousBounds,
-      hasSomeTrees = false;
-  window.mapboxgl.accessToken = '';
+      hasSomeTrees = false,
+      filterElm,
+      loader,
+      initialized = false;
   var map = new mapboxgl.Map({
     container: document.querySelector('.map'),
     // container id
-    style: 'mapbox://styles/mapbox/satellite-streets-v9',
+    style: 'mapbox://styles/mapbox/satellite-streets-v11',
     center: [-73.567229, 45.453523],
     // starting position [lng, lat]
     zoom: 15 // starting zoom
 
+  });
+  map.addControl(new mapboxgl.GeolocateControl({
+    positionOptions: {
+      enableHighAccuracy: true
+    }
+  })); // Add zoom and rotation controls to the map.
+
+  map.addControl(new mapboxgl.NavigationControl());
+  map.on('load', function () {
+    initialize();
   });
 
   function getAreaFromBounds(bounds) {
@@ -132,10 +144,8 @@
         vertDiff = vertDist / oldHeight * 100,
         horizontalDiff = horizontalDist / oldWidth * 100;
     return vertDiff > horizontalDiff ? vertDiff : horizontalDiff;
-  } // Add zoom and rotation controls to the map.
+  }
 
-
-  map.addControl(new mapboxgl.NavigationControl());
   map.on('idle', function (evt) {
     var bounds = evt.target.getBounds();
 
@@ -144,14 +154,24 @@
     }
 
     console.log(calculateAreaDiff(bounds, previousBounds)); // if area is 10% different from currentArea
-    // Or the center has moved 20% of the previous bounding box 
+    // Or the center has moved 20% of the previous bounding box
 
-    if ((calculateAreaDiff(bounds, previousBounds) > 10 || calculateCenterDiff(bounds, previousBounds) > 20 || !hasSomeTrees) && evt.target.getZoom() > 16) {
+    if ((calculateAreaDiff(bounds, previousBounds) > 10 || calculateCenterDiff(bounds, previousBounds) > 20 || !hasSomeTrees) && evt.target.getZoom() > 14) {
       previousBounds = bounds;
       hasSomeTrees = true;
       getTreesForBounds(bounds);
     }
   });
+  map.on('sourcedataloading', startLoading);
+  map.on('sourcedata', stopLoading);
+
+  function initialize() {
+    if (!initialized) {
+      filterElm = document.querySelector('#filter-text');
+      filterElm.addEventListener('keyup', filterByName);
+      loader = document.querySelector('.loading');
+    }
+  }
 
   function getTreesForBounds(bounds) {
     if (map.getLayer('trees')) {
@@ -172,7 +192,7 @@
       "source": "tree-json",
       "paint": {
         "circle-radius": 5,
-        "circle-color": "#3887be"
+        "circle-color": "#00FF00"
       }
     }); // Change the cursor to a pointer when the mouse is over the states layer.
 
@@ -188,21 +208,43 @@
     map.on('click', 'trees', function (e) {
       new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(makeTreeDesc(e.features[0].properties)).addTo(map);
     });
+    filterByName();
+  }
 
-    function makeTreeDesc(props) {
-      $html = '<article class="tree-details">';
-      $html += '<h4>' + props.latin + '</h4>';
-      $html += '<p><strong>FR:</strong> ' + props.fr + '</p>';
-      $html += '<p><strong>EN:</strong> ' + props.ang + '</p>';
+  function makeTreeDesc(props) {
+    $html = '<article class="tree-details">';
+    $html += '<h4>' + props.latin + '</h4>';
+    $html += '<p><strong>FR:</strong> ' + props.fr + '</p>';
+    $html += '<p><strong>EN:</strong> ' + props.ang + '</p>';
 
-      if (props.planted.length > 0 && props.planted !== null) {
-        $html += '<p><strong>Planté:</strong> ' + props.planted + '</p>';
-      }
+    if (props.planted.length > 0 && props.planted !== null) {
+      $html += '<p><strong>Planté:</strong> ' + props.planted + '</p>';
+    }
 
-      $html += '</article>';
-      return $html;
+    $html += '</article>';
+    return $html;
+  }
+
+  function filterByName() {
+    var filterText = filterElm.value.toLowerCase();
+
+    if (map.getLayer('trees') && filterText.length > 1) {
+      map.setFilter('trees', ['any', [">", ["index-of", filterText, ["downcase", ['get', 'fr']]], -1], [">", ["index-of", filterText, ["downcase", ['get', 'ang']]], -1], [">", ["index-of", filterText, ["downcase", ['get', 'latin']]], -1]]);
+    } else if (map.getLayer('trees')) {
+      map.setFilter('trees', null);
     }
   }
+
+  function startLoading() {
+    loader.classList.add('active');
+  }
+
+  function stopLoading() {
+    loader.classList.remove('active');
+  }
+
+  initialize();
+  startLoading();
 })();
 
 /***/ }),

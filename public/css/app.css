@@ -39,3 +39,21 @@ html {
   transition: opacity 1s;
 }
 
+.filter-control-holder {
+  position: absolute;
+  top: 0;
+  height: 0;
+  overflow: visible;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.filter-control-holder input {
+  font-size: 18px;
+  margin-top: 1rem;
+  line-height: 2rem;
+  min-height: 2rem;
+  text-align: center;
+}
+
