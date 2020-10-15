@@ -37,7 +37,7 @@ class testmemory extends Command
         echo "\n$memory : Before\n";
 
 
-        $tree = \App\Tree::find($id);
+        $tree = \App\Models\Tree::find($id);
 
         $memory = memory_get_usage();
 
@@ -61,7 +61,7 @@ class testmemory extends Command
             $memory = memory_get_usage();
             echo "\n$memory : Before\n";
 
-            $tree = \App\Tree::find($id);
+            $tree = \App\Models\Tree::find($id);
 
             $memory = memory_get_usage();
             echo "$memory : After\n";

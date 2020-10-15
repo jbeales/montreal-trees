@@ -26,8 +26,8 @@ class PopulateTrees extends Migration
                 }
 
                 if(!empty( $data[20])) {
-                    
-                
+
+
 
                     $releve = null;
                     if( !empty($data[15])) {
@@ -42,9 +42,9 @@ class PopulateTrees extends Migration
                     if(!empty($data[14])) {
                         $dhp = $data[14];
                     }
-                    
 
-                    App\Tree::create([
+
+                    App\Models\Tree::create([
                         'INV_TYPE' => $data[0],
                         'EMP_NO' => $data[1],
                         'ARROND' => $data[2],
@@ -67,7 +67,7 @@ class PopulateTrees extends Migration
                         'NOM_PARC' => $data[19],
                         'Longitude' => $data[20],
                         'Latitude' => $data[21],
-                        'location' => DB::raw(sprintf("POINT(%s, %s)", floatval($data[20]), floatval($data[21])))  
+                        'location' => DB::raw(sprintf("POINT(%s, %s)", floatval($data[20]), floatval($data[21])))
                     ]);
 
                     $created++;

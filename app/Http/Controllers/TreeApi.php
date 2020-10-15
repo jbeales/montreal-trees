@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Tree;
+use App\Models\Tree;
 use App\Http\Resources\TreeResource;
 use App\Http\Resources\TreeResourceCollection;
 
 class TreeApi extends Controller
 {
-    
+
 
 
 	public function trees(Request $request) {
@@ -20,7 +20,7 @@ class TreeApi extends Controller
 		$bounds = json_decode($request->get('bounds'));
 
 		if( isset($bounds->north) ) {
-			
+
 			$points = [
 				[$bounds->west, $bounds->north],
 				[$bounds->east, $bounds->north],

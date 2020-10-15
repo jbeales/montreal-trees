@@ -86,7 +86,7 @@ class UpdateTreeDatabase extends Command
                             }
 
 
-                            App\Tree::create([
+                            App\Models\Tree::create([
                                 'INV_TYPE' => $data[0],
                                 'EMP_NO' => $data[1],
                                 'ARROND' => $data[2],
