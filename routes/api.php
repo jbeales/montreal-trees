@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\TreeApi;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------

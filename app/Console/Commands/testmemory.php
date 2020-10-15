@@ -52,7 +52,7 @@ class testmemory extends Command
      */
     public function handle()
     {
-        
+
         $iterations = 100;
 
         for($i=0;$i<$iterations;$i++) {
@@ -62,11 +62,11 @@ class testmemory extends Command
             echo "\n$memory : Before\n";
 
             $tree = \App\Tree::find($id);
-            
+
             $memory = memory_get_usage();
             echo "$memory : After\n";
             echo "==================\n";
-            
+
         }
 
 
