@@ -3,6 +3,9 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class UpdateTreeDatabase extends Command
 {
@@ -14,7 +17,7 @@ class UpdateTreeDatabase extends Command
     protected $signature = 'update-tree-data';
 
 
-    protected $main_api_url = 'https://data.montreal.ca/api/3/action/datastore_search?resource_id=64e28fe6-ef37-437a-972d-d1d3f1f7d891&sort=_id%20asc';
+//    protected $main_api_url = 'https://data.montreal.ca/api/3/action/datastore_search?resource_id=64e28fe6-ef37-437a-972d-d1d3f1f7d891&sort=_id%20asc';
 
     protected $next_api_url;
 
@@ -43,100 +46,70 @@ class UpdateTreeDatabase extends Command
     public function handle()
     {
 
+        // url
+        $url = 'https://montreal.l3.ckan.io/dataset/b89fd27d-4b49-461b-8e54-fa2b34a628c4/resource/64e28fe6-ef37-437a-972d-d1d3f1f7d891/download/arbres-publics.csv';
 
-        do {
+        $treefilename = 'arbres-publics.csv';
 
-        } while( !empty( $this->next_api_url));
-
-       // API https://data.montreal.ca/api/3/action/datastore_search?resource_id=64e28fe6-ef37-437a-972d-d1d3f1f7d891&sort=_id%20asc
-
-
-
-
-
-
-
-
-        $timezone = new DateTimeZone('America/Toronto');
-                $created = 0;
-                if (($handle = fopen ( storage_path('app/rawdata/arbres-publics.csv'), 'r' )) !== FALSE) {
-                    while ( ($data = fgetcsv ( $handle, 0, ',' )) !== FALSE ) {
-
-                        if($created === 0) {
-                            $created++;
-                            continue;
-                        }
-
-                        if(!empty( $data[20])) {
-
-
-
-                            $releve = null;
-                            if( !empty($data[15])) {
-                                $releve = Carbon\Carbon::createFromFormat('Y-m-d\TH:i:s', $data[15], $timezone);
-                            }
-                            $plantation = null;
-                            if( !empty($data[16])) {
-                                $plantation = Carbon\Carbon::createFromFormat('Y-m-d\TH:i:s', $data[16], $timezone);
-                            }
-
-                            $dhp = 0;
-                            if(!empty($data[14])) {
-                                $dhp = $data[14];
-                            }
-
-
-                            App\Models\Tree::create([
-                                'INV_TYPE' => $data[0],
-                                'EMP_NO' => $data[1],
-                                'ARROND' => $data[2],
-                                'ARROND_NOM' => $data[3],
-                                'Rue' => $data[4],
-                                'COTE' => $data[5],
-                                'No_civique' => $data[6],
-                                'Emplacement' => $data[7],
-                                'Coord_X' => $data[8],
-                                'Coord_Y' => $data[9],
-                                'SIGLE' => $data[10],
-                                'Essence_latin' => $data[11],
-                                'Essence_fr' => $data[12],
-                                'ESSENCE_ANG' => $data[13],
-                                'DHP' => $dhp,
-                                'Date_releve' => $releve,
-                                'Date_plantation' => $plantation,
-                                'localisation' => $data[17],
-                                'CODE_PARC' => $data[18],
-                                'NOM_PARC' => $data[19],
-                                'Longitude' => $data[20],
-                                'Latitude' => $data[21],
-                                'location' => DB::raw(sprintf("POINT(%s, %s)", floatval($data[20]), floatval($data[21])))
-                            ]);
-
-                            $created++;
-                        }
-                    }
-                    fclose ( $handle );
-                }
-
-                echo "\nThere were $created trees added to the DB.\n";
-
-                Schema::table('trees', function (Blueprint $table) {
-                    $table->spatialIndex('location');
-                });
-    }
-
-
-    protected function import_api_page() {
-
-    }
-
-    protected function fetch_api_page() {
-        if(!empty($this->next_api_url)) {
-            $url = $this->next_api_url;
-        } else {
-            $url = $this->main_api_url;
+        // Delete old CSV if it exists.
+        if( Storage::exists($treefilename) ) {
+            Storage::delete($treefilename);
         }
 
+        $response = Http::withOptions([
+            'sink' => Storage::path($treefilename),
+        ])->get($url);
+
+        if($response->successful()) {
+            $this->info("Got CSV file");
+        } else {
+            $this->info("There was a problem receiving the CSV.");
+            $this->info(print_r($response, true));
+            return 0;
+        }
+
+        $this->info('Preparing.');
+        DB::statement('DROP TABLE IF EXISTS trees_new');
+        DB::statement('CREATE TABLE trees_new LIKE trees');
+        $this->info('Loading Data.');
+        DB::getPdo()->exec(
+            "LOAD DATA LOCAL INFILE " . DB::getPdo()->quote(Storage::path($treefilename)) . " INTO TABLE trees_new
+            FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"'
+            IGNORE 1 LINES
+            (
+                INV_TYPE,
+                EMP_NO,
+                ARROND,
+                ARROND_NOM,
+                Rue,
+                COTE,
+                No_civique,
+                Emplacement,
+                Coord_X,
+                Coord_Y,
+                SIGLE,
+                Essence_latin,
+                Essence_fr,
+                ESSENCE_ANG,
+                DHP,
+                Date_releve,
+                Date_plantation,
+                localisation,
+                CODE_PARC,
+                NOM_PARC,
+                Longitude,
+                Latitude
+            )"
+        );
+
+        $this->info('Setting Location column.');
+        DB::statement("UPDATE trees_new SET location=POINT(Latitude, Longitude)");
+
+        DB::statement('DROP TABLE IF EXISTS trees_old');
+        DB::statement('RENAME TABLE trees TO trees_old');
+        DB::statement('RENAME TABLE trees_new TO trees');
+
+        $this->info('Done.');
 
     }
 }

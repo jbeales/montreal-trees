@@ -38,7 +38,7 @@ class SetupTrees extends Migration
             $table->string('NOM_PARC')->nullable();
             $table->float('Longitude', 9, 6)->nullable();
             $table->float('Latitude', 9, 6)->nullable();
-            $table->point('location');
+            $table->point('location')->nullable();
 
         });
     }
