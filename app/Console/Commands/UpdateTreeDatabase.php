@@ -50,7 +50,7 @@ class UpdateTreeDatabase extends Command
         $url = 'https://montreal.l3.ckan.io/dataset/b89fd27d-4b49-461b-8e54-fa2b34a628c4/resource/64e28fe6-ef37-437a-972d-d1d3f1f7d891/download/arbres-publics.csv';
 
         $treefilename = 'arbres-publics.csv';
-
+/*
         // Delete old CSV if it exists.
         if( Storage::exists($treefilename) ) {
             Storage::delete($treefilename);
@@ -67,10 +67,26 @@ class UpdateTreeDatabase extends Command
             $this->info(print_r($response, true));
             return 0;
         }
-
+*/
         $this->info('Preparing.');
         DB::statement('DROP TABLE IF EXISTS trees_new');
         DB::statement('CREATE TABLE trees_new LIKE trees');
+
+
+        // Remove the index & allow null values so we can add rows
+        DB::statement("DELETE FROM trees_new WHERE location IS NULL");
+        DB::statement("ALTER TABLE trees_new MODIFY location POINT NOT NULL");
+
+       if( count(
+            DB::select("SHOW INDEX FROM trees_new WHERE Key_name = 'location'")
+        ) > 0 ) {
+            DB::statement("ALTER TABLE trees_new DROP INDEX location");
+        }
+
+
+
+
+
         $this->info('Loading Data.');
         DB::getPdo()->exec(
             "LOAD DATA LOCAL INFILE " . DB::getPdo()->quote(Storage::path($treefilename)) . " INTO TABLE trees_new
@@ -103,7 +119,12 @@ class UpdateTreeDatabase extends Command
         );
 
         $this->info('Setting Location column.');
-        DB::statement("UPDATE trees_new SET location=POINT(Latitude, Longitude)");
+        DB::statement("UPDATE trees_new SET location=POINT(Longitude, Latitude)");
+
+        $this->info('Adding Index');
+        DB::statement("DELETE FROM trees_new WHERE location IS NULL");
+        DB::statement("ALTER TABLE trees_new MODIFY location POINT NOT NULL");
+        DB::statement("ALTER TABLE trees_new ADD SPATIAL INDEX(location)");
 
         DB::statement('DROP TABLE IF EXISTS trees_old');
         DB::statement('RENAME TABLE trees TO trees_old');

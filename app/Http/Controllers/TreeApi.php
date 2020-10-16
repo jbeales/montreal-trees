@@ -7,6 +7,8 @@ use App\Models\Tree;
 use App\Http\Resources\TreeResource;
 use App\Http\Resources\TreeResourceCollection;
 
+use Illuminate\Support\Facades\DB;
+
 class TreeApi extends Controller
 {
 
@@ -56,9 +58,10 @@ class TreeApi extends Controller
 			...$substitutions
 		);
 
-		$trees = Tree::whereRaw(sprintf("ST_Within(location, ST_GeomFromText('%s'))", $geomtext))->get();
+        // @TODO: Security!  These values should be much better escaped!
+        $trees = Tree::whereRaw(sprintf("ST_Within(location, ST_GeomFromText('%s'))", $geomtext))->get();
 
-		return new TreeResourceCollection($trees);
+        return new TreeResourceCollection($trees);
 
 	}
 
