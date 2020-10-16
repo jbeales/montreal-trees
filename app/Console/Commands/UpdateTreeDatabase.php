@@ -123,6 +123,8 @@ class UpdateTreeDatabase extends Command
 
         $this->info('Adding Index');
         DB::statement("DELETE FROM trees_new WHERE location IS NULL");
+        DB::statement("UPDATE trees_new SET Date_releve=NULL WHERE Date_releve='0000-00-00 00:00:00'");
+        DB::statement("UPDATE trees_new SET Date_plantation=NULL WHERE Date_plantation='0000-00-00 00:00:00'");
         DB::statement("ALTER TABLE trees_new MODIFY location POINT NOT NULL");
         DB::statement("ALTER TABLE trees_new ADD SPATIAL INDEX(location)");
 
