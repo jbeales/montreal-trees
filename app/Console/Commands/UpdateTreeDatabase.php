@@ -14,12 +14,7 @@ class UpdateTreeDatabase extends Command
      *
      * @var string
      */
-    protected $signature = 'update-tree-data';
-
-
-//    protected $main_api_url = 'https://data.montreal.ca/api/3/action/datastore_search?resource_id=64e28fe6-ef37-437a-972d-d1d3f1f7d891&sort=_id%20asc';
-
-    protected $next_api_url;
+    protected $signature = 'update-tree-data {csvUrl}';
 
     /**
      * The console command description.
@@ -46,8 +41,7 @@ class UpdateTreeDatabase extends Command
     public function handle()
     {
 
-        // url
-        $url = 'https://montreal.l3.ckan.io/dataset/b89fd27d-4b49-461b-8e54-fa2b34a628c4/resource/64e28fe6-ef37-437a-972d-d1d3f1f7d891/download/arbres-publics.csv';
+        $url = $this->argument('csvUrl');     //'https://montreal.l3.ckan.io/dataset/b89fd27d-4b49-461b-8e54-fa2b34a628c4/resource/64e28fe6-ef37-437a-972d-d1d3f1f7d891/download/arbres-publics.csv';
 
         $treefilename = 'arbres-publics.csv';
 
