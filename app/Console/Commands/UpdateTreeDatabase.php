@@ -50,7 +50,7 @@ class UpdateTreeDatabase extends Command
         $url = 'https://montreal.l3.ckan.io/dataset/b89fd27d-4b49-461b-8e54-fa2b34a628c4/resource/64e28fe6-ef37-437a-972d-d1d3f1f7d891/download/arbres-publics.csv';
 
         $treefilename = 'arbres-publics.csv';
-/*
+
         // Delete old CSV if it exists.
         if( Storage::exists($treefilename) ) {
             Storage::delete($treefilename);
@@ -67,7 +67,7 @@ class UpdateTreeDatabase extends Command
             $this->info(print_r($response, true));
             return 0;
         }
-*/
+
         $this->info('Preparing.');
         DB::statement('DROP TABLE IF EXISTS trees_new');
         DB::statement('CREATE TABLE trees_new LIKE trees');
