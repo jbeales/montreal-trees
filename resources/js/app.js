@@ -121,7 +121,11 @@
 			"type": "circle",
 			"source": "tree-json",
 			"paint": {
-				"circle-radius": 5,
+				"circle-radius": [
+                    'interpolate', ['linear'], ['zoom'],
+                    14, 1,
+                    22, 30,
+                ],
 				"circle-color": "#00FF00"
 			}
 		});
