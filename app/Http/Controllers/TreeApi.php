@@ -58,7 +58,6 @@ class TreeApi extends Controller
 			...$substitutions
 		);
 
-        // @TODO: Security!  These values should be much better escaped!
         $trees = Tree::whereRaw(sprintf("ST_Within(location, ST_GeomFromText('%s'))", $geomtext))->get();
 
         return new TreeResourceCollection($trees);
