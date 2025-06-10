@@ -1,7 +1,7 @@
 
 (function() {
 
-	var previousBounds,
+	let previousBounds,
 		hasSomeTrees = false,
         filterElm,
         loader,
@@ -9,7 +9,7 @@
 
 
 
-	var map = new mapboxgl.Map({
+	let map = new mapboxgl.Map({
 		container: document.querySelector('.map'), // container id
 		style: 'mapbox://styles/mapbox/satellite-streets-v11',
 		center: [ -73.567229, 45.453523 ], // starting position [lng, lat]
@@ -45,7 +45,7 @@
 	 */
 	function calculateAreaDiff( newBounds, oldBounds ) {
 
-		var newArea = getAreaFromBounds(newBounds),
+		let newArea = getAreaFromBounds(newBounds),
 			oldArea = getAreaFromBounds(oldBounds);
 
 		return 100 * ( (newArea - oldArea) / oldArea );
@@ -53,7 +53,7 @@
 
 	function calculateCenterDiff( newBounds, oldBounds ) {
 
-		var vertDist = Math.abs(newBounds.getCenter().lat - oldBounds.getCenter().lat),
+		let vertDist = Math.abs(newBounds.getCenter().lat - oldBounds.getCenter().lat),
 			horizontalDist = Math.abs(newBounds.getCenter().lng - oldBounds.getCenter().lng),
 			oldWidth = Math.abs(oldBounds.getEast() - oldBounds.getWest()),
 			oldHeight = Math.abs(oldBounds.getNorth() - oldBounds.getSouth()),
@@ -65,7 +65,7 @@
 
 
 	map.on('idle', function(evt) {
-		var bounds = evt.target.getBounds();
+		let bounds = evt.target.getBounds();
 
 		if( typeof previousBounds === 'undefined') {
 			previousBounds = bounds;
@@ -155,7 +155,7 @@
 	}
 
     function makeTreeDesc(props) {
-        $html = '<article class="tree-details">';
+        let $html = '<article class="tree-details">';
         $html += '<h4>' + props.latin + '</h4>';
         $html += '<p><strong>FR:</strong> ' + props.fr + '</p>';
         $html += '<p><strong>EN:</strong> ' + props.ang + '</p>';

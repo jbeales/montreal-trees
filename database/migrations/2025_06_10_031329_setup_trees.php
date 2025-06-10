@@ -1,20 +1,20 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class SetupTrees extends Migration
+return new class extends Migration
 {
-     /**
+    /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('trees', function (Blueprint $table) {
-            $table->bigIncrements('id');
+
+            $table->charset('utf8mb4');
+            $table->collation('utf8mb4_unicode_ci');
 
             $table->string('INV_TYPE');
             $table->unsignedBigInteger('EMP_NO');
@@ -24,8 +24,6 @@ class SetupTrees extends Migration
             $table->string('COTE')->nullable();
             $table->string('No_civique')->nullable();
             $table->string('Emplacement')->nullable();
-            $table->float('Coord_X', 15, 4)->nullable(); // 5043932.522
-            $table->float('Coord_Y', 15, 4)->nullable();
             $table->string('SIGLE')->nullable();
             $table->string('Essence_latin')->nullable();
             $table->string('Essence_fr')->nullable();
@@ -38,18 +36,19 @@ class SetupTrees extends Migration
             $table->string('NOM_PARC')->nullable();
             $table->float('Longitude', 9, 6)->nullable();
             $table->float('Latitude', 9, 6)->nullable();
-            $table->point('location')->nullable();
+            $table->geography('location', subtype: 'point', srid: 4326);
+
+            $table->primary(['INV_TYPE', 'EMP_NO']);
+            $table->spatialIndex('location');
 
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('trees');
     }
-}
+};

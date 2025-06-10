@@ -5,13 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Arbres de Montréal</title>
 
-        <link href="{{asset('css/app.css') }}" rel="stylesheet" />
-
-        <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
-        <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+        <link href="https://api.mapbox.com/mapbox-gl-js/v3.12.0/mapbox-gl.css" rel="stylesheet">
+        <script src="https://api.mapbox.com/mapbox-gl-js/v3.12.0/mapbox-gl.js"></script>
         <script>
             mapboxgl.accessToken = '{{ config('services.mapbox.key') }}';
         </script>
+
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     </head>
     <body>
@@ -26,6 +26,6 @@
 
 -->
 
-        <script src="{{asset('js/app.js')}}" async></script>
+
     </body>
 </html>
